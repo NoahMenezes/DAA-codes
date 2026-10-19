@@ -26,7 +26,7 @@ def MinMax(a, low, high):
     return minimum, maximum
 
 
-a = [50, 10, 90, 30, 70, 40, 80, 20]
+a = [-96, 55,76, -87, 71, -91, 64,16, 63, 3]
 
 print("Original Array:", *a)
 minimum, maximum = MinMax(a, 0, len(a) - 1)

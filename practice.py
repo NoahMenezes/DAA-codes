@@ -1,3 +1,4 @@
+from MergeSort import merge_sort
 from fractions import Fraction
 import time 
 import random
@@ -68,9 +69,3 @@ print(ratio)
 knapsack(weight, profit, capacity)
 
 
-arr=[random.randint(1,100000) for i in range(1,1000)]
-start=time.time()
-
-knapsack(weight, profit, capacity)
-end=time.time()
-print(end-start)
