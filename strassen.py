@@ -51,7 +51,14 @@ def Strassen(A, B):
 
     return np.block([[C11, C12],
                      [C21, C22]])
-
+A=np.array([[1,2],
+            [3,4]])
+B=np.array([[5,6],
+            [7,8]])
+print("Normal Multiplication Result:")
+print(Normal_Multiplication(A, B))
+print("\nStrassen Multiplication Result:")
+print(Strassen(A, B))
 if __name__ == "__main__":
     sizes = [32, 64, 128, 256, 512]
     

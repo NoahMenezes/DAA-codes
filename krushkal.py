@@ -1,117 +1,57 @@
-def adjust(A, i, n):
-    j = 2 * i
-    item = A[i]
+import heapq
+INF = float('inf')
 
-    while j <= n:
-        if j < n and A[j][0] > A[j + 1][0]:
-            j = j + 1
+cost = [
+    [INF, 16,  32,  81,  97,  54,  28,  37,  57,  21],
+    [16,  INF, 53,  42,  47,  53,  49,  41,  95,  49],
+    [32,  53,  INF, 86,  69,  50,  10,  88,  50,  56],
+    [81,  42,  86,  INF, INF, INF, 73,  36,  16,  INF],
+    [97,  47,  69,  INF, INF, 65,  INF, INF, 18,  26],
+    [54,  53,  50,  INF, 65,  INF, 38,  75,  10,  55],
+    [28,  49,  10,  73,  INF, 38,  INF, 20,  12,  52],
+    [37,  41,  88,  36,  INF, 75,  20,  INF, 69,  78],
+    [57,  95,  50,  16,  18,  10,  12,  69,  INF, 54],
+    [21,  49,  56,  INF, 26,  55,  52,  78,  54,  INF],
+]
 
-        if item[0] <= A[j][0]:
-            break
+def find(parent, i):
+    while parent[i] > 0:
+        i = parent[i]
 
-        A[j // 2] = A[j]
-        j = 2 * j
+    return i
 
-    A[j // 2] = item
+def Union(parent, i, j):
+    parent[i] = j
 
+def Kruskal(cost):
+    n = len(cost)
+    parent = [-1] * (n+1)
+    edges = []
 
-def heapify(A, n):
-    for i in range(n // 2, 0, -1):
-        adjust(A, i, n)
-
-
-def del_min(A, n):
-    if n == 0:
-        return None
-
-    x = A[1]
-    A[1] = A[n]
-    A.pop()
-
-    if n > 1:
-        adjust(A, 1, n - 1)
-
-    return x
-
-
-def kruskal(E, cost, n, t):
-
-    parent = [-1] * n
-
-    def find(i):
-        while parent[i] >= 0:
-            i = parent[i]
-        return i
-
-    def union(i, j):
-        parent[i] = j
-
-    # Construct heap
-    heap = [None]
-
-    for i in range(len(E)):
-        u, v = E[i]
-        heap.append((cost[i], u, v))
-
-    heapify(heap, len(E))
+    for i in range(n):
+        for j in range(i+1,n):
+            if cost[i][j] != INF:
+                heapq.heappush(edges,(cost[i][j], i+1, j+1))
 
     i = 0
     mincost = 0
-    heap_size = len(E)
+    print(f"{'T':<5} | {'1':<5} {'2':<5}")
+    
 
-    while i < n - 1 and heap_size > 0:
-
-        edge = del_min(heap, heap_size)
-        heap_size -= 1
-
-        c, u, v = edge
-
-        j = find(u)
-        k = find(v)
-
+    while i < n-1 and edges:
+        weight, u, v = heapq.heappop(edges)
+        j = find(parent, u)
+        k = find(parent, v)
+    
         if j != k:
             i += 1
+            mincost += weight
+            Union(parent, j, k)
+            print(f"{i:<5} | {u:<5} {v:<5}")
 
-            t.append((u, v))
-            mincost += c
-
-            union(j, k)
-
-            print(f"\nStep {i}")
-            print("t        t[1,2]")
-            print("-------------------")
-
-            for x in range(len(t)):
-                u1, v1 = t[x]
-                print(f"{x + 1:<8} ({u1 + 1},{v1 + 1})")
-
-            print(f"Mincost = {mincost:g}")
-
-    if i != n - 1:
-        print("\nNo Spanning Tree")
+    if i != n-1:
+        print("No Spanning Tree\n")
     else:
-        print("\nMinimum Cost:", mincost)
+        print(f"Mincost = {mincost}")
 
-    return mincost
-
-
-# Input
-
-n = int(input("Enter number of vertices: "))
-e = int(input("Enter number of edges: "))
-
-E = []
-cost = []
-
-print("Enter edges and cost (u v cost):")
-
-for i in range(e):
-    u, v, c = input().split()
-
-    E.append((int(u) - 1, int(v) - 1))
-    cost.append(float(c))
-
-
-t = []
-
-kruskal(E, cost, n, t)
+Kruskal(cost)
