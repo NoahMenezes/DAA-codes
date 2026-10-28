@@ -45,7 +45,7 @@ def get_path(parent,dest):
     return "->".join(map(str,path))
 
 cost_matrix = [
-    [0,   11, INF, INF, INF, INF, INF, INF],
+    [0, 11, INF, INF, INF, INF, INF, INF],
     [39, 0,  INF, 33, 30, 60, 89, 91],
     [INF,  27, 0,  24, 23, 21, 17, 12],
     [83,  INF, 64, 0,  INF, INF, 51, INF],
